@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Yousra Farhani — Quantum Computing Researcher</title>
+<meta name="description" content="PhD Researcher at the Niels Bohr Institute. Quantum compilation, fault-tolerant computing, error correction, QML."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px;scroll-padding-top:60px}
+
+:root{
+  /* Core */
+  --ink:        #0d0d0c;
+  --white:      #ffffff;
+  --page:       #f2f2f0;   /* warm silver-grey page background */
+
+  /* Silver palette */
+  --s0:         #f8f8f6;   /* near-white silver */
+  --s1:         #efefed;   /* light silver */
+  --s2:         #dededb;   /* border silver */
+  --s3:         #b8b8b4;   /* mid silver */
+  --s4:         #8a8a86;   /* text silver */
+  --s5:         #5a5a57;   /* dark text silver */
+
+  /* Accents */
+  --gold:       #c9981a;
+  --link:       #1a56cc;
+
+  /* Fonts */
+  --serif:     'Lora', Georgia, serif;
+  --sans:      'Inter', system-ui, sans-serif;
+  --mono:      'Courier New', monospace;
+
+  --max:       960px;
+  --pad:       clamp(1.2rem, 4vw, 2.5rem);
+  --r:         10px;       /* border-radius */
+  --ease:      cubic-bezier(.4,0,.2,1);
+  --t:         0.22s;
+
+  --sh1: 0 1px 3px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
+  --sh2: 0 4px 16px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.04);
+  --sh3: 0 8px 32px rgba(0,0,0,.12), 0 2px 6px rgba(0,0,0,.05);
+}
+
+body{
+  font-family:var(--sans);
+  background:var(--page);
+  color:var(--ink);
+  line-height:1.65;
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+::selection{background:#d0dff5}
+
+/* ═══════════════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════════════ */
+header{
+  background:#080808;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+  min-height:400px;
+}
+#circuit-canvas{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  pointer-events:none;z-index:0;
+}
+/* Strong left vignette — text always readable */
+header::before{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(108deg,
+    rgba(8,8,8,.98)  0%,
+    rgba(8,8,8,.93) 40%,
+    rgba(8,8,8,.52) 65%,
+    rgba(8,8,8,.05) 100%);
+}
+.header-inner{
+  position:relative;z-index:2;
+  max-width:var(--max);
+  margin:0 auto;
+  padding:3.5rem var(--pad) 3.5rem;
+  display:grid;
+  grid-template-columns:200px 1fr;
+  gap:3rem;
+  align-items:center;
+  min-height:400px;
+}
+
+/* ── Profile photo ── */
+.profile-photo{
+  width:200px;height:260px;
+  border-radius:8px;
+  overflow:hidden;
+  background:#191919;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 16px 56px rgba(0,0,0,.75), 0 0 0 1px rgba(255,255,255,.04);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:3.8rem;
+  color:rgba(255,255,255,.18);
+  flex-shrink:0;position:relative;
+}
+.profile-photo img{width:100%;height:100%;object-fit:cover;border-radius:0}
+.profile-photo::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:80px;
+  background:linear-gradient(transparent,rgba(0,0,0,.55));
+  pointer-events:none;
+}
+
+/* ── Header text ── */
+.header-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.7rem;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.42);
+  margin-bottom:.85rem;
+}
+.pulse{
+  width:6px;height:6px;border-radius:50%;
+  background:#4ade80;
+  box-shadow:0 0 0 0 rgba(74,222,128,.5);
+  animation:pulse-ring 2.4s ease-in-out infinite;
+}
+@keyframes pulse-ring{
+  0%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}
+  60%{box-shadow:0 0 0 6px rgba(74,222,128,0)}
+  100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}
+}
+
+h1.hero-name{
+  font-family:var(--serif);
+  font-size:clamp(2.2rem, 5vw, 3.4rem);
+  font-weight:400;
+  letter-spacing:-.025em;
+  line-height:1.03;
+  color:#fff;
+  margin-bottom:.6rem;
+  text-shadow:0 2px 28px rgba(0,0,0,.85);
+}
+h1.hero-name em{font-style:italic;color:rgba(255,255,255,.65)}
+
+/* Role tag pills */
+.role-tags{
+  display:flex;flex-wrap:wrap;gap:.38rem;
+  margin-bottom:1.2rem;
+}
+.role-tag{
+  display:inline-flex;align-items:center;
+  font-size:.67rem;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;
+  color:rgba(255,255,255,.68);
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:4px;
+  padding:.27rem .72rem;
+  backdrop-filter:blur(6px);
+  transition:background var(--t) var(--ease), border-color var(--t) var(--ease);
+}
+.role-tag:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28)}
+.role-tag.hi{
+  color:rgba(255,255,255,.88);
+  background:rgba(200,196,188,.13);
+  border-color:rgba(200,196,188,.3);
+}
+
+.hero-bio{
+  font-size:.93rem;color:rgba(255,255,255,.8);
+  line-height:1.78;max-width:490px;
+  margin-bottom:1.7rem;
+  text-shadow:0 1px 8px rgba(0,0,0,.55);
+}
+.hero-bio a{
+  color:rgba(200,195,185,.9);
+  text-decoration:underline;
+  text-underline-offset:3px;
+  text-decoration-color:rgba(200,195,185,.32);
+}
+.hero-bio a:hover{color:#fff}
+
+/* CTA buttons */
+.hero-cta{display:flex;flex-wrap:wrap;gap:.65rem;margin-bottom:1.4rem}
+.btn{
+  display:inline-flex;align-items:center;gap:.42rem;
+  font-size:.78rem;font-weight:600;font-family:var(--sans);
+  letter-spacing:.04em;
+  padding:.62rem 1.3rem;
+  border-radius:6px;
+  border:none;cursor:pointer;
+  text-decoration:none;
+  transition:all var(--t) var(--ease);
+  white-space:nowrap;
+}
+.btn svg{width:13px;height:13px;stroke:currentColor;flex-shrink:0}
+.btn:hover{text-decoration:none}
+
+.btn-white{
+  background:#fff;color:var(--ink);
+  box-shadow:0 2px 14px rgba(0,0,0,.32);
+}
+.btn-white:hover{background:#e8e8e6;transform:translateY(-1px);box-shadow:0 4px 22px rgba(0,0,0,.38)}
+
+.btn-silver{
+  background:rgba(158,153,145,.16);
+  color:rgba(255,255,255,.87);
+  border:1px solid rgba(185,180,172,.3);
+  backdrop-filter:blur(10px);
+}
+.btn-silver:hover{
+  background:rgba(158,153,145,.26);
+  border-color:rgba(200,196,188,.5);
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+/* Social link pills */
+.hero-links{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+.hero-links a{
+  display:inline-flex;align-items:center;gap:.28rem;
+  font-size:.73rem;font-weight:500;
+  color:rgba(198,194,188,.72);
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:4px;
+  padding:.2rem .68rem;
+  transition:all var(--t) var(--ease);
+  text-decoration:none;
+}
+.hero-links a:hover{
+  color:rgba(255,255,255,.94);
+  background:rgba(255,255,255,.11);
+  border-color:rgba(255,255,255,.22);
+  text-decoration:none;
+}
+.hero-links a svg{width:11px;height:11px;stroke:currentColor;opacity:.75}
+
+/* ═══════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════ */
+nav{
+  background:#080808;
+  border-bottom:1px solid rgba(255,255,255,.065);
+  position:sticky;top:0;z-index:200;
+}
+.nav-inner{
+  max-width:var(--max);margin:0 auto;
+  display:flex;padding:0 var(--pad);
+  overflow-x:auto;scrollbar-width:none;
+}
+.nav-inner::-webkit-scrollbar{display:none}
+nav a{
+  color:rgba(255,255,255,.36);
+  text-decoration:none;
+  font-size:.82rem;font-weight:500;
+  padding:.88rem 1rem;
+  white-space:nowrap;
+  transition:color var(--t) var(--ease), border-color var(--t) var(--ease);
+  border-bottom:2px solid transparent;
+  display:flex;align-items:center;gap:.32rem;
+}
+nav a svg{width:13px;height:13px;stroke:currentColor;opacity:.65;flex-shrink:0}
+nav a:hover{color:rgba(255,255,255,.72);border-bottom-color:rgba(255,255,255,.22);text-decoration:none}
+nav a.active{color:#fff;border-bottom-color:rgba(200,196,188,.75)}
+nav a.active svg{opacity:1}
+
+/* ═══════════════════════════════════════════════════════
+   MAIN
+═══════════════════════════════════════════════════════ */
+main{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+
+/* Section fade-in */
+section{
+  padding:3.5rem 0 3rem;
+  border-bottom:1px solid var(--s2);
+  opacity:0;transform:translateY(24px);
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
+}
+section.visible{opacity:1;transform:translateY(0)}
+section:last-of-type{border-bottom:none}
+
+/* Section heading */
+.sec-head{margin-bottom:2rem}
+.sec-label{
+  display:flex;align-items:center;gap:.42rem;
+  font-family:var(--mono);
+  font-size:.68rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--s4);
+  margin-bottom:.55rem;
+}
+.sec-label svg{width:12px;height:12px;stroke:currentColor;opacity:.8}
+.sec-label::after{
+  content:'';flex:1;max-width:40px;height:1px;
+  background:linear-gradient(90deg,var(--s3),transparent);
+  border-radius:1px;
+}
+h2{
+  font-family:var(--serif);
+  font-size:1.65rem;font-weight:400;
+  letter-spacing:-.015em;
+  color:var(--ink);
+  line-height:1.15;
+}
+h2 em{font-style:italic;color:var(--s4)}
+.sec-sub{
+  font-size:.82rem;color:var(--s4);
+  margin-top:.3rem;font-family:var(--mono);letter-spacing:.02em;
+}
+
+p{color:#363634;line-height:1.78;margin-bottom:.75rem;font-size:.92rem}
+p:last-child{margin-bottom:0}
+p strong{color:var(--ink);font-weight:600}
+
+/* ═══════════════════════════════════════════════════════
+   PUBLICATIONS
+═══════════════════════════════════════════════════════ */
+.pub-list{display:flex;flex-direction:column;gap:0}
+.pub-entry{
+  display:flex;gap:1.25rem;
+  padding:1.5rem 0;
+  border-bottom:1px solid var(--s2);
+  align-items:flex-start;
+  transition:background var(--t) var(--ease);
+}
+.pub-entry:last-child{border-bottom:none}
+.pub-thumb{
+  width:80px;height:62px;flex-shrink:0;
+  border-radius:6px;overflow:hidden;
+  background:var(--s1);border:1px solid var(--s2);
+  display:flex;align-items:center;justify-content:center;
+}
+.pub-venue{font-size:.7rem;color:var(--s4);margin-bottom:.18rem;font-family:var(--mono)}
+.pub-title{
+  font-family:var(--serif);font-size:.95rem;
+  color:var(--ink);line-height:1.4;margin-bottom:.12rem;
+}
+.pub-title a{color:var(--ink)}
+.pub-title a:hover{color:var(--link)}
+.pub-authors{font-size:.79rem;color:var(--s4)}
+.pub-authors strong{color:var(--s5)}
+.pub-desc{font-size:.79rem;color:var(--s5);margin-top:.22rem;line-height:1.58}
+.ptag{
+  display:inline-block;font-size:.63rem;
+  border-radius:3px;padding:.08rem .36rem;
+  margin-left:.3rem;vertical-align:middle;
+  font-weight:600;letter-spacing:.04em;color:#fff;
+}
+.ptag-a{background:#1a3d6b}
+.ptag-fa{background:#236b3e}
+
+/* ═══════════════════════════════════════════════════════
+   NEWS CARDS
+═══════════════════════════════════════════════════════ */
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1rem;
+}
+.news-card{
+  background:var(--white);
+  border:1px solid var(--s2);
+  border-radius:var(--r);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:var(--sh1);
+  transition:box-shadow var(--t) var(--ease),
+             transform var(--t) var(--ease),
+             border-color var(--t) var(--ease);
+  text-decoration:none;color:inherit;
+}
+.news-card:hover{
+  box-shadow:var(--sh2);
+  transform:translateY(-3px);
+  border-color:var(--s3);
+  text-decoration:none;
+}
+.news-card-img{
+  height:120px;
+  background:var(--s1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.3rem;
+  overflow:hidden;flex-shrink:0;
+  border-bottom:1px solid var(--s2);
+  position:relative;
+}
+.news-card-img img{
+  width:100%;height:100%;
+  object-fit:cover;
+  position:absolute;inset:0;
+}
+/* coloured top strip */
+.news-card-img::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;z-index:1;
+}
+.nc-award   .news-card-img::before{background:linear-gradient(90deg,#b8881e,#f0d060)}
+.nc-research.news-card-img::before{background:linear-gradient(90deg,#7a8a9a,#aab8c4)}
+.nc-community.news-card-img::before{background:linear-gradient(90deg,#5a7a5a,#88b088)}
+.nc-talk    .news-card-img::before{background:linear-gradient(90deg,#6a6880,#9898b4)}
+.nc-hack    .news-card-img::before{background:linear-gradient(90deg,#8a7060,#bea890)}
+
+.news-card-body{
+  padding:.95rem 1.05rem 1.05rem;
+  display:flex;flex-direction:column;flex:1;gap:.28rem;
+}
+.news-date{
+  font-size:.67rem;color:var(--s4);
+  font-family:var(--mono);letter-spacing:.025em;
+}
+.news-title{
+  font-size:.86rem;font-weight:600;
+  color:var(--ink);line-height:1.38;
+}
+.news-desc{
+  font-size:.77rem;color:var(--s5);
+  line-height:1.6;flex:1;
+}
+.news-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:.55rem;
+}
+.news-tag{
+  font-size:.62rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--s4);background:var(--s0);
+  border:1px solid var(--s2);
+  border-radius:3px;padding:.09rem .42rem;
+}
+.news-li{
+  display:inline-flex;align-items:center;gap:.28rem;
+  font-size:.7rem;color:var(--s4);
+  font-weight:500;
+  transition:color var(--t) var(--ease);
+  text-decoration:none;
+}
+.news-li svg{width:10px;height:10px;stroke:currentColor}
+.news-li:hover{color:var(--link);text-decoration:none}
+
+/* ═══════════════════════════════════════════════════════
+   EXPERIENCE TIMELINE
+═══════════════════════════════════════════════════════ */
+.exp-list{display:flex;flex-direction:column;gap:0}
+.exp-entry{
+  display:grid;
+  grid-template-columns:140px 1fr;
+  gap:.35rem 1.5rem;
+  padding:1.35rem 0;
+  border-bottom:1px solid var(--s2);
+  align-items:start;
+}
+.exp-entry:last-child{border-bottom:none}
+.exp-date{
+  font-size:.73rem;color:var(--s4);
+  font-family:var(--mono);
+  padding-top:.18rem;line-height:1.55;
+}
+.exp-role{font-weight:600;font-size:.91rem;color:var(--ink);margin-bottom:.12rem}
+.exp-org{font-size:.8rem;color:var(--s4);margin-bottom:.25rem}
+.exp-desc{font-size:.8rem;color:var(--s5);line-height:1.62}
+
+/* ═══════════════════════════════════════════════════════
+   TALKS
+═══════════════════════════════════════════════════════ */
+.conf-group{margin-bottom:1.3rem}
+.conf-year-label{
+  font-size:.75rem;font-weight:700;
+  color:var(--s4);
+  letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:.5rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.conf-year-label::after{
+  content:'';flex:1;height:1px;
+  background:var(--s2);
+}
+.conf-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:.28rem}
+.conf-list li{
+  font-size:.84rem;color:#444;
+  line-height:1.55;
+  padding-left:1.1rem;
+  position:relative;
+}
+.conf-list li::before{
+  content:'';
+  position:absolute;left:0;top:.58em;
+  width:4px;height:4px;border-radius:50%;
+  background:var(--s2);border:1px solid var(--s3);
+}
+.conf-list li strong{color:var(--ink)}
+
+/* ═══════════════════════════════════════════════════════
+   COMMUNITY
+═══════════════════════════════════════════════════════ */
+.comm-list{display:flex;flex-direction:column;gap:1.5rem}
+.comm-entry{display:flex;gap:1.1rem;align-items:flex-start}
+.comm-icon{
+  width:44px;height:44px;flex-shrink:0;
+  border-radius:8px;
+  background:var(--s1);border:1px solid var(--s2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+}
+.comm-date{font-size:.69rem;color:var(--s4);font-family:var(--mono);margin-bottom:.08rem}
+.comm-title{font-size:.9rem;font-weight:600;color:var(--ink);margin-bottom:.08rem;line-height:1.35}
+.comm-desc{font-size:.8rem;color:var(--s5);line-height:1.55}
+
+.photo-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:.6rem;margin-top:1.5rem;
+}
+.pgitem{
+  aspect-ratio:4/3;border-radius:8px;
+  overflow:hidden;background:var(--s1);
+  border:1px solid var(--s2);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  transition:border-color var(--t) var(--ease);
+}
+.pgitem:hover{border-color:var(--s3)}
+.pgitem img{width:100%;height:100%;object-fit:cover}
+.pgitem .ph-note{
+  font-size:.6rem;color:var(--s4);
+  text-align:center;padding:.5rem;line-height:1.5;
+}
+
+/* ═══════════════════════════════════════════════════════
+   AWARDS
+═══════════════════════════════════════════════════════ */
+.awards-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:.95rem;
+}
+.aw-card{
+  background:var(--white);
+  border:1px solid var(--s2);
+  border-radius:var(--r);
+  padding:1.15rem 1.05rem 1.05rem;
+  display:flex;flex-direction:column;gap:.4rem;
+  box-shadow:var(--sh1);
+  transition:box-shadow var(--t) var(--ease),
+             transform var(--t) var(--ease),
+             border-color var(--t) var(--ease);
+  position:relative;overflow:hidden;
+}
+.aw-card:hover{box-shadow:var(--sh2);transform:translateY(-3px);border-color:var(--s3)}
+.aw-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:3px;
+}
+.aw-gold   ::before, .aw-card.aw-gold   ::before{background:linear-gradient(90deg,#b0801a,#edd060,#b0801a)}
+.aw-silver ::before, .aw-card.aw-silver ::before{background:linear-gradient(90deg,#828a96,#b8c4cc,#828a96)}
+.aw-blue   ::before, .aw-card.aw-blue   ::before{background:linear-gradient(90deg,#1a3d6b,#3470b0,#1a3d6b)}
+.aw-green  ::before, .aw-card.aw-green  ::before{background:linear-gradient(90deg,#1e6038,#3e9860,#1e6038)}
+.aw-red    ::before, .aw-card.aw-red    ::before{background:linear-gradient(90deg,#7b2d00,#b84820,#7b2d00)}
+.aw-purple ::before, .aw-card.aw-purple ::before{background:linear-gradient(90deg,#482080,#7848b8,#482080)}
+.aw-icon{
+  width:30px;height:30px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;background:var(--s0);
+}
+.aw-year{
+  display:inline-block;
+  font-size:.61rem;font-family:var(--mono);
+  color:var(--s4);
+  background:var(--s0);border:1px solid var(--s2);
+  border-radius:3px;padding:.07rem .3rem;
+  align-self:flex-start;
+}
+.aw-title{
+  font-size:.82rem;font-weight:600;
+  color:var(--ink);line-height:1.35;
+}
+.aw-org{
+  font-size:.7rem;color:var(--s4);
+  display:flex;align-items:center;gap:.26rem;
+  margin-top:auto;padding-top:.25rem;
+}
+.aw-org svg{width:9px;height:9px;stroke:currentColor;flex-shrink:0}
+
+/* ═══════════════════════════════════════════════════════
+   SKILLS
+═══════════════════════════════════════════════════════ */
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1.2rem 2.5rem;
+}
+.sk-block{}
+.sk-label{
+  font-size:.72rem;font-weight:700;
+  color:var(--s4);
+  text-transform:uppercase;letter-spacing:.09em;
+  margin-bottom:.45rem;
+  display:flex;align-items:center;gap:.3rem;
+}
+.sk-label svg{width:11px;height:11px;stroke:currentColor}
+.sk-pills{display:flex;flex-wrap:wrap;gap:.28rem}
+.sk-pill{
+  font-size:.76rem;
+  background:var(--white);
+  border:1px solid var(--s2);
+  color:var(--s5);
+  border-radius:4px;
+  padding:.19rem .52rem;
+  transition:border-color var(--t) var(--ease), color var(--t) var(--ease), background var(--t) var(--ease);
+}
+.sk-pill:hover{border-color:var(--s3);color:var(--ink);background:var(--s0)}
+
+/* ═══════════════════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════════════════ */
+.contact-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:.85rem;
+  margin-top:1.3rem;
+}
+.cc{
+  display:flex;align-items:center;gap:.85rem;
+  background:var(--white);
+  border:1px solid var(--s2);
+  border-radius:var(--r);
+  padding:.95rem 1.05rem;
+  transition:box-shadow var(--t) var(--ease),
+             transform var(--t) var(--ease),
+             border-color var(--t) var(--ease);
+  text-decoration:none!important;
+  color:var(--ink)!important;
+}
+.cc:hover{box-shadow:var(--sh1);transform:translateY(-2px);border-color:var(--s3);text-decoration:none}
+.cc-icon{
+  width:38px;height:38px;border-radius:8px;
+  background:var(--s0);border:1px solid var(--s2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.cc-icon svg{width:16px;height:16px;stroke:var(--s4)}
+.cc-info strong{
+  display:block;font-size:.83rem;
+  color:var(--ink);font-weight:600;margin-bottom:.08rem;
+}
+.cc-info span{font-size:.73rem;color:var(--s4);font-family:var(--mono)}
+
+/* ═══════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════ */
+footer{
+  background:#070707;
+  color:rgba(178,172,162,.42);
+  padding:2rem var(--pad);
+  font-size:.76rem;
+  margin-top:1rem;
+  border-top:1px solid rgba(178,172,162,.09);
+}
+.footer-inner{
+  max-width:var(--max);margin:0 auto;
+  display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:.6rem;
+}
+.footer-links{display:flex;gap:1.3rem}
+.footer-links a{
+  color:rgba(178,172,162,.38);
+  font-size:.75rem;
+  transition:color var(--t) var(--ease);
+}
+.footer-links a:hover{color:rgba(218,213,204,.75);text-decoration:none}
+
+/* ── Scroll to top ── */
+#back-top{
+  position:fixed;bottom:1.8rem;right:1.8rem;z-index:300;
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(16,16,14,.9);
+  border:1px solid rgba(178,172,162,.2);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--sh2);backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;
+  transition:opacity var(--t) var(--ease), transform var(--t) var(--ease);
+}
+#back-top.show{opacity:1;pointer-events:all}
+#back-top:hover{transform:translateY(-2px);border-color:rgba(200,196,188,.4)}
+#back-top svg{width:16px;height:16px;stroke:rgba(200,196,188,.75);stroke-width:2;fill:none}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   RESEARCH SECTION ENHANCEMENTS
+═══════════════════════════════════════════════════════ */
+
+/* Lead statement + circuit side-by-side */
+.research-hero{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:2rem;
+  align-items:start;
+  margin-bottom:2.5rem;
+  padding:1.75rem;
+  background:var(--white);
+  border:1px solid var(--s2);
+  border-radius:var(--r);
+  box-shadow:var(--sh1);
+}
+.research-lead{
+  font-size:1.02rem;
+  color:var(--ink);
+  line-height:1.78;
+  margin-bottom:1.1rem;
+  font-family:var(--serif);
+}
+.research-lead strong{color:var(--ink)}
+
+/* Affiliation chips */
+.research-affil{display:flex;flex-wrap:wrap;gap:.45rem}
+.affil-chip{
+  display:inline-flex;align-items:center;gap:.32rem;
+  font-size:.73rem;font-weight:500;
+  color:var(--s5);
+  background:var(--s1);
+  border:1px solid var(--s2);
+  border-radius:5px;
+  padding:.3rem .75rem;
+  transition:all var(--t) var(--ease);
+  text-decoration:none;
+}
+.affil-chip svg{width:11px;height:11px;stroke:currentColor;opacity:.7}
+.affil-chip:hover{
+  background:var(--s2);
+  border-color:var(--s3);
+  color:var(--ink);
+  text-decoration:none;
+}
+
+/* Inline circuit card */
+.research-circuit-card{
+  background:var(--s0);
+  border:1px solid var(--s2);
+  border-radius:8px;
+  padding:.9rem 1rem .7rem;
+  text-align:center;
+  flex-shrink:0;
+}
+.rcc-label{
+  font-size:.65rem;font-weight:700;
+  color:var(--s4);text-transform:uppercase;letter-spacing:.1em;
+  margin-bottom:.6rem;
+}
+.rcc-caption{
+  font-size:.65rem;color:var(--s4);
+  margin-top:.55rem;font-family:var(--mono);
+  letter-spacing:.02em;
+}
+
+/* Research direction cards */
+.research-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1rem;
+}
+.rc-card{
+  background:var(--white);
+  border:1px solid var(--s2);
+  border-radius:var(--r);
+  padding:1.3rem 1.15rem 1.1rem;
+  display:flex;flex-direction:column;gap:.5rem;
+  box-shadow:var(--sh1);
+  position:relative;overflow:hidden;
+  transition:box-shadow var(--t) var(--ease), transform var(--t) var(--ease), border-color var(--t) var(--ease);
+}
+.rc-card:hover{box-shadow:var(--sh2);transform:translateY(-3px);border-color:var(--s3)}
+.rc-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:3px;
+}
+.rc-primary::before{background:linear-gradient(90deg,#1a3d6b,#3470b0)}
+.rc-applied::before{background:linear-gradient(90deg,#236b3e,#3ea060)}
+.rc-emerging::before{background:linear-gradient(90deg,#6a5080,#9a78c0)}
+
+.rc-icon{
+  width:34px;height:34px;
+  background:var(--s0);border:1px solid var(--s2);
+  border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+}
+.rc-icon svg{width:16px;height:16px;stroke:var(--s4)}
+
+.rc-tag{
+  font-size:.63rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--s4);
+}
+.rc-title{
+  font-size:.9rem;font-weight:600;
+  color:var(--ink);line-height:1.3;
+}
+.rc-body{
+  font-size:.79rem;color:var(--s5);line-height:1.62;flex:1;
+}
+.rc-links{
+  display:flex;flex-wrap:wrap;gap:.35rem;
+  margin-top:.4rem;
+}
+.rc-link{
+  display:inline-flex;align-items:center;
+  font-size:.7rem;font-weight:600;
+  color:var(--s4);
+  background:var(--s0);border:1px solid var(--s2);
+  border-radius:3px;padding:.12rem .45rem;
+  transition:all var(--t) var(--ease);
+  text-decoration:none;
+}
+.rc-link:hover{color:var(--link);border-color:var(--link);background:#eef2fa;text-decoration:none}
+
+@media(max-width:740px){
+  .research-hero{grid-template-columns:1fr;gap:1.2rem}
+  .research-circuit-card{display:none}
+  .research-cards{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .research-cards{grid-template-columns:1fr}
+}
+
+/* ═══════════════════════════════════════════════════════
+   LIVELY PAGE ACCENTS
+═══════════════════════════════════════════════════════ */
+/* Subtle silver shimmer on section headings */
+.sec-head{position:relative}
+.sec-head::after{
+  content:'';
+  position:absolute;
+  bottom:-1px;left:0;
+  width:60px;height:2px;
+  background:linear-gradient(90deg,var(--s3),transparent);
+  border-radius:1px;
+}
+/* Gentle hover shimmer on news/award cards */
+.news-card::after,.aw-card::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.04) 50%,rgba(255,255,255,0) 100%);
+  opacity:0;transition:opacity var(--t) var(--ease);
+  pointer-events:none;border-radius:inherit;
+}
+.news-card:hover::after,.aw-card:hover::after{opacity:1}
+/* News card position:relative needed for ::after */
+.news-card{position:relative}
+
+@media(max-width:740px){
+  .header-inner{grid-template-columns:1fr;gap:1.5rem;min-height:auto}
+  .profile-photo{width:150px;height:195px;margin:0 auto}
+  .exp-entry{grid-template-columns:1fr;gap:.06rem}
+  .awards-grid{grid-template-columns:repeat(2,1fr)}
+  .photo-grid{grid-template-columns:repeat(2,1fr)}
+  .contact-grid{grid-template-columns:1fr}
+  .news-grid{grid-template-columns:1fr 1fr}
+  .skills-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .awards-grid{grid-template-columns:1fr}
+  .news-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     HEADER — animated quantum circuit background
+═══════════════════════════════════════════════════════ -->
+<header>
+  <canvas id="circuit-canvas"></canvas>
+  <div class="header-inner">
+
+    <!-- ▸ Profile photo
+         Replace the div below with:
+         <img src="photo.jpg" alt="Yousra Farhani"/>
+         inside .profile-photo to add your picture           -->
+    <div class="profile-photo">YF</div>
+
+    <div class="header-text">
+      <div class="header-eyebrow">
+        <span class="pulse"></span>
+        PhD Researcher · Niels Bohr Institute · Copenhagen
+      </div>
+
+      <h1 class="hero-name">Yousra<br/><em>Farhani</em></h1>
+
+      <!-- Role tag pills -->
+      <div class="role-tags">
+        <span class="role-tag hi">Quantum Compilation</span>
+        <span class="role-tag">Error Correction</span>
+        <span class="role-tag">QML</span>
+        <span class="role-tag hi">Quantum Africa Founder</span>
+        <span class="role-tag">Fault-Tolerant QC</span>
+        <span class="role-tag">Copenhagen</span>
+      </div>
+
+      <p class="hero-bio">
+        I work on circuit-level optimization and error correction codes for distributed quantum architectures at the
+        <a href="https://www.nbi.ku.dk" target="_blank">Niels Bohr Institute</a> (NQCP),
+        accelerating quantum chemistry on next-generation fault-tolerant hardware.
+        I founded <a href="https://quantumafrica.org" target="_blank">Quantum Africa</a>
+        — Africa's largest quantum research network.
+      </p>
+
+      <div class="hero-cta">
+        <a href="#research" class="btn btn-white">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Explore Research
+        </a>
+        <a href="/cdn-cgi/l/email-protection#6d1402181e1f0c430b0c1f050c03042d030f04430618430906" class="btn btn-silver">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          Get in Touch
+        </a>
+        <a href="#" class="btn btn-silver">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download CV
+        </a>
+      </div>
+
+      <div class="hero-links">
+        <a href="/cdn-cgi/l/email-protection#245d4b515756450a4245564c454a4d644a464d0a4f510a404f">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          Email
+        </a>
+        <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/YousraFarhani" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          GitHub
+        </a>
+        <a href="https://quantumafrica.org" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          Quantum Africa
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════════════ -->
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="#research"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>Research</a>
+    <a href="#publications"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Publications</a>
+    <a href="#news"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>News</a>
+    <a href="#experience"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Experience</a>
+    <a href="#talks"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Talks</a>
+    <a href="#community"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Community</a>
+    <a href="#awards"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>Awards</a>
+    <a href="#skills"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Skills</a>
+    <a href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>Contact</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════════ -->
+<main>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="sec-head">
+    <div class="sec-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+      Research
+    </div>
+    <h2>Quantum Compilation &amp; <em>Error Correction</em></h2>
+    <div class="sec-sub">Niels Bohr Institute · NQCP · Nov 2025 – present</div>
+  </div>
+
+  <!-- Hero statement -->
+  <div class="research-hero">
+    <div class="research-hero-text">
+      <p class="research-lead">I build the software infrastructure for <strong>fault-tolerant quantum computers</strong> — optimizing how quantum circuits are compiled, corrected, and distributed across hardware nodes so that quantum chemistry and beyond becomes computationally feasible.</p>
+      <div class="research-affil">
+        <a href="https://www.nbi.ku.dk/english/" target="_blank" class="affil-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          Niels Bohr Institute
+        </a>
+        <a href="https://nqcp.ku.dk/" target="_blank" class="affil-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          NQCP
+        </a>
+        <a href="https://qcri.org/" target="_blank" class="affil-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          QCRI — QML Research
+        </a>
+      </div>
+    </div>
+    <!-- Inline SVG quantum circuit illustration -->
+    <div class="research-circuit-card">
+      <div class="rcc-label">Current work</div>
+      <svg viewBox="0 0 260 130" width="260" height="130" xmlns="http://www.w3.org/2000/svg">
+        <!-- 4 qubit wires -->
+        <line x1="28" y1="25"  x2="248" y2="25"  stroke="#ddd" stroke-width="1.2"/>
+        <line x1="28" y1="52"  x2="248" y2="52"  stroke="#ddd" stroke-width="1.2"/>
+        <line x1="28" y1="79"  x2="248" y2="79"  stroke="#ddd" stroke-width="1.2"/>
+        <line x1="28" y1="106" x2="248" y2="106" stroke="#ddd" stroke-width="1.2"/>
+        <!-- Ket labels -->
+        <text x="2"  y="29"  font-size="8" fill="#aaa" font-family="Courier New">|0⟩</text>
+        <text x="2"  y="56"  font-size="8" fill="#aaa" font-family="Courier New">|0⟩</text>
+        <text x="2"  y="83"  font-size="8" fill="#aaa" font-family="Courier New">|0⟩</text>
+        <text x="2"  y="110" font-size="8" fill="#aaa" font-family="Courier New">|0⟩</text>
+        <!-- H gates col1 -->
+        <rect x="30" y="17"  width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="41" y="27" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">H</text>
+        <rect x="30" y="44"  width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="41" y="54" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">H</text>
+        <rect x="30" y="71"  width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="41" y="81" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">H</text>
+        <rect x="30" y="98" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="41" y="108" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">H</text>
+        <!-- CNOT col2: q0→q1, q2→q3 -->
+        <circle cx="78" cy="25" r="4" fill="#1a3d6b"/>
+        <line x1="78" y1="25" x2="78" y2="52" stroke="#1a3d6b" stroke-width="1.3"/>
+        <circle cx="78" cy="52" r="8" fill="white" stroke="#1a3d6b" stroke-width="1.3"/>
+        <line x1="70" y1="52" x2="86" y2="52" stroke="#1a3d6b" stroke-width="1.3"/>
+        <line x1="78" y1="44" x2="78" y2="60" stroke="#1a3d6b" stroke-width="1.3"/>
+        <circle cx="78" cy="79" r="4" fill="#1a3d6b"/>
+        <line x1="78" y1="79" x2="78" y2="106" stroke="#1a3d6b" stroke-width="1.3"/>
+        <circle cx="78" cy="106" r="8" fill="white" stroke="#1a3d6b" stroke-width="1.3"/>
+        <line x1="70" y1="106" x2="86" y2="106" stroke="#1a3d6b" stroke-width="1.3"/>
+        <line x1="78" y1="98" x2="78" y2="114" stroke="#1a3d6b" stroke-width="1.3"/>
+        <!-- T/S gates col3 -->
+        <rect x="102" y="17" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="113" y="27" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">T</text>
+        <rect x="102" y="44" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="113" y="54" font-size="7.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">T†</text>
+        <rect x="102" y="71" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="113" y="81" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">S</text>
+        <rect x="102" y="98" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="113" y="108" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">T</text>
+        <!-- Long-range CNOT col4: q0→q3 (distributed!) -->
+        <circle cx="148" cy="25" r="4" fill="#7b2d00"/>
+        <line x1="148" y1="25" x2="148" y2="106" stroke="#7b2d00" stroke-width="1.3" stroke-dasharray="4 3"/>
+        <circle cx="148" cy="106" r="8" fill="white" stroke="#7b2d00" stroke-width="1.3"/>
+        <line x1="140" y1="106" x2="156" y2="106" stroke="#7b2d00" stroke-width="1.3"/>
+        <line x1="148" y1="98" x2="148" y2="114" stroke="#7b2d00" stroke-width="1.3"/>
+        <!-- distributed label -->
+        <text x="152" y="66" font-size="6.5" fill="#7b2d00" font-family="Courier New" font-style="italic">distributed</text>
+        <!-- H col5 -->
+        <rect x="172" y="17" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="183" y="27" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">H</text>
+        <rect x="172" y="44" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="183" y="54" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">H</text>
+        <rect x="172" y="71" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="183" y="81" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">H</text>
+        <rect x="172" y="98" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <text x="183" y="108" font-size="8.5" fill="#555" text-anchor="middle" font-family="sans-serif" font-weight="600">H</text>
+        <!-- Measurement col6 -->
+        <rect x="210" y="17" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <path d="M213 30 Q221 21 229 30" stroke="#777" stroke-width="1" fill="none"/>
+        <line x1="221" y1="30" x2="225" y2="21" stroke="#777" stroke-width="1"/>
+        <rect x="210" y="44" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <path d="M213 57 Q221 48 229 57" stroke="#777" stroke-width="1" fill="none"/>
+        <line x1="221" y1="57" x2="225" y2="48" stroke="#777" stroke-width="1"/>
+        <rect x="210" y="71" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <path d="M213 84 Q221 75 229 84" stroke="#777" stroke-width="1" fill="none"/>
+        <line x1="221" y1="84" x2="225" y2="75" stroke="#777" stroke-width="1"/>
+        <rect x="210" y="98" width="22" height="16" rx="3" fill="white" stroke="#c8c8c4" stroke-width="1"/>
+        <path d="M213 111 Q221 102 229 111" stroke="#777" stroke-width="1" fill="none"/>
+        <line x1="221" y1="111" x2="225" y2="102" stroke="#777" stroke-width="1"/>
+      </svg>
+      <div class="rcc-caption">Distributed fault-tolerant circuit — Niels Bohr Institute, 2025</div>
+    </div>
+  </div>
+
+  <!-- Research direction cards -->
+  <div class="research-cards">
+    <div class="rc-card rc-primary">
+      <div class="rc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+      </div>
+      <div class="rc-tag">Primary · PhD</div>
+      <div class="rc-title">Quantum Circuit Compilation</div>
+      <div class="rc-body">Developing advanced compilation strategies that minimize gate depth and communication overhead for distributed quantum architectures, targeting near-term fault-tolerant devices.</div>
+      <div class="rc-links">
+        <a href="https://nqcp.ku.dk/" target="_blank" class="rc-link">NQCP ↗</a>
+      </div>
+    </div>
+
+    <div class="rc-card rc-primary">
+      <div class="rc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="rc-tag">Primary · PhD</div>
+      <div class="rc-title">Quantum Error Correction Codes</div>
+      <div class="rc-body">Investigating error correction codes for distributed quantum systems — enabling scalable, reliable computation across networked quantum processing units.</div>
+      <div class="rc-links">
+        <a href="https://qiskit.org/documentation/stable/0.43/apidoc/qiskit_aer.html" target="_blank" class="rc-link">Qiskit ↗</a>
+        <a href="https://cirq.readthedocs.io/" target="_blank" class="rc-link">Cirq ↗</a>
+      </div>
+    </div>
+
+    <div class="rc-card rc-applied">
+      <div class="rc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      </div>
+      <div class="rc-tag">Applied · Quantum Chemistry</div>
+      <div class="rc-title">Accelerating Quantum Chemistry</div>
+      <div class="rc-body">Accelerating quantum chemistry simulations on fault-tolerant hardware — targeting molecular energy calculations and drug discovery via variational and phase estimation algorithms.</div>
+      <div class="rc-links">
+        <a href="https://pennylane.ai/" target="_blank" class="rc-link">PennyLane ↗</a>
+      </div>
+    </div>
+
+    <div class="rc-card rc-applied">
+      <div class="rc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      </div>
+      <div class="rc-tag">Applied · Optimization</div>
+      <div class="rc-title">Quantum Combinatorial Optimization</div>
+      <div class="rc-body">QUBO model design via AutoQUBO for NP-hard scheduling problems on D-Wave and InfinityQ quantum annealers — achieving competitive solutions for Flow Shop Scheduling.</div>
+      <div class="rc-links">
+        <a href="https://www.dwavesys.com/" target="_blank" class="rc-link">D-Wave ↗</a>
+        <a href="https://gecco-2024.sigevo.org/" target="_blank" class="rc-link">GECCO ↗</a>
+      </div>
+    </div>
+
+    <div class="rc-card rc-emerging">
+      <div class="rc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      </div>
+      <div class="rc-tag">Interdisciplinary · QML</div>
+      <div class="rc-title">Quantum Machine Learning at Scale</div>
+      <div class="rc-body">Distributed quantum kernel learning, quantum graph neural networks for drug-target interaction, and QML scalability via randomized measurements for large datasets.</div>
+      <div class="rc-links">
+        <a href="https://pennylane.ai/qml/" target="_blank" class="rc-link">PennyLane QML ↗</a>
+        <a href="https://github.com/YousraFarhani" target="_blank" class="rc-link">GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="rc-card rc-emerging">
+      <div class="rc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="rc-tag">Emerging · QNLP</div>
+      <div class="rc-title">Quantum NLP for Arabic</div>
+      <div class="rc-body">Building quantum natural language processing pipelines for Arabic language processing using the lambeq library at QCRI — advancing NLP for low-resource languages with quantum advantage.</div>
+      <div class="rc-links">
+        <a href="https://cqcl.github.io/lambeq/" target="_blank" class="rc-link">lambeq ↗</a>
+        <a href="https://www.qcri.org/" target="_blank" class="rc-link">QCRI ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="sec-head">
+    <div class="sec-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Publications
+    </div>
+    <h2>Selected <em>Publications</em></h2>
+    <div class="sec-sub">Peer-reviewed papers and workshop contributions</div>
+  </div>
+  <div class="pub-list">
+    <div class="pub-entry">
+      <div class="pub-thumb"><svg width="60" height="46" viewBox="0 0 60 46" fill="none"><line x1="5" y1="11" x2="55" y2="11" stroke="#c8c8c4" stroke-width="1"/><line x1="5" y1="23" x2="55" y2="23" stroke="#c8c8c4" stroke-width="1"/><rect x="9" y="5" width="10" height="12" rx="1.5" fill="white" stroke="#ddd" stroke-width=".8"/><text x="14" y="13" font-size="6" fill="#888" text-anchor="middle" font-family="sans-serif" font-weight="600">H</text><circle cx="34" cy="11" r="2.2" fill="#aaa"/><line x1="34" y1="11" x2="34" y2="23" stroke="#aaa" stroke-width=".9"/><circle cx="34" cy="23" r="5" fill="white" stroke="#aaa" stroke-width=".9"/><line x1="29" y1="23" x2="39" y2="23" stroke="#aaa" stroke-width=".9"/><line x1="34" y1="18" x2="34" y2="28" stroke="#aaa" stroke-width=".9"/><rect x="45" y="5" width="10" height="12" rx="1.5" fill="white" stroke="#ddd" stroke-width=".8"/><path d="M47 15 Q50 9 53 15" stroke="#999" stroke-width=".8" fill="none"/></svg></div>
+      <div>
+        <div class="pub-venue">GECCO 2025 · Malaga, Spain</div>
+        <div class="pub-title"><a href="#">Manual vs. Automated QUBO Formulations for Flow Shop Scheduling: A Comparative Study on D-Wave and InfinityQ</a><span class="ptag ptag-a">Class A</span><span class="ptag ptag-fa">First Author</span></div>
+        <div class="pub-authors"><strong>Y. Farhani</strong> et al. · 2025</div>
+        <div class="pub-desc">Comparative study of hand-crafted vs. AutoQUBO-generated QUBO models, benchmarked on two quantum annealing platforms.</div>
+      </div>
+    </div>
+    <div class="pub-entry">
+      <div class="pub-thumb"><svg width="60" height="46" viewBox="0 0 60 46" fill="none"><ellipse cx="30" cy="23" rx="20" ry="16" fill="none" stroke="#ccc" stroke-width=".9"/><ellipse cx="30" cy="23" rx="20" ry="5.5" fill="none" stroke="#ccc" stroke-width=".9" stroke-dasharray="2.5 2"/><line x1="30" y1="7" x2="30" y2="39" stroke="#ccc" stroke-width=".9"/><circle cx="30" cy="11" r="2.5" fill="#aaa"/><line x1="30" y1="11" x2="44" y2="19" stroke="#999" stroke-width=".9"/></svg></div>
+      <div>
+        <div class="pub-venue">ACM Q-Spatial 2025 · Minneapolis, USA</div>
+        <div class="pub-title"><a href="#">Quantum Machine Learning: Where Are We and What Is Next?</a><span class="ptag ptag-fa">First Author</span></div>
+        <div class="pub-authors"><strong>Y. Farhani</strong> et al. · 2025</div>
+        <div class="pub-desc">ACM SIGSPATIAL Workshop survey of the current state and near-future of quantum machine learning.</div>
+      </div>
+    </div>
+    <div class="pub-entry">
+      <div class="pub-thumb"><svg width="60" height="46" viewBox="0 0 60 46" fill="none"><line x1="5" y1="11" x2="55" y2="11" stroke="#c8c8c4" stroke-width="1"/><line x1="5" y1="25" x2="55" y2="25" stroke="#c8c8c4" stroke-width="1"/><rect x="9" y="5" width="10" height="12" rx="1.5" fill="white" stroke="#ddd" stroke-width=".8"/><text x="14" y="13" font-size="6" fill="#888" text-anchor="middle" font-family="sans-serif" font-weight="600">H</text><rect x="25" y="5" width="10" height="12" rx="1.5" fill="white" stroke="#ddd" stroke-width=".8"/><text x="30" y="13" font-size="6" fill="#888" text-anchor="middle" font-family="sans-serif" font-weight="600">X</text><circle cx="46" cy="11" r="2.2" fill="#aaa"/><line x1="46" y1="11" x2="46" y2="25" stroke="#aaa" stroke-width=".9"/><circle cx="46" cy="25" r="5" fill="white" stroke="#aaa" stroke-width=".9"/><line x1="41" y1="25" x2="51" y2="25" stroke="#aaa" stroke-width=".9"/><line x1="46" y1="20" x2="46" y2="30" stroke="#aaa" stroke-width=".9"/></svg></div>
+      <div>
+        <div class="pub-venue">GECCO 2024 · Melbourne, Australia</div>
+        <div class="pub-title"><a href="#">Enhanced QUBO Models for the Flow Shop Scheduling Problem</a><span class="ptag ptag-a">Class A</span><span class="ptag ptag-fa">First Author</span></div>
+        <div class="pub-authors"><strong>Y. Farhani</strong> et al. · 2024</div>
+        <div class="pub-desc">Novel QUBO formulations for combinatorial manufacturing scheduling, tested on D-Wave quantum annealing hardware.</div>
+      </div>
+    </div>
+    <div class="pub-entry">
+      <div class="pub-thumb"><svg width="60" height="46" viewBox="0 0 60 46" fill="none"><rect x="8" y="5" width="44" height="36" rx="3" fill="none" stroke="#ccc" stroke-width=".9"/><line x1="12" y1="14" x2="48" y2="14" stroke="#e5e5e0" stroke-width="4"/><line x1="12" y1="22" x2="42" y2="22" stroke="#ebebea" stroke-width="3"/><line x1="12" y1="29" x2="38" y2="29" stroke="#ebebea" stroke-width="3"/><line x1="12" y1="35" x2="30" y2="35" stroke="#ebebea" stroke-width="3"/></svg></div>
+      <div>
+        <div class="pub-venue">MENA ML Winter School 2025 · Doha, Qatar · Poster</div>
+        <div class="pub-title">Quantum Hadamard Edge Detection Algorithm for Medical Imaging</div>
+        <div class="pub-authors"><strong>Y. Farhani</strong> et al. · 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="sec-head">
+    <div class="sec-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      News &amp; Activities
+    </div>
+    <h2>Highlights &amp; <em>Milestones</em></h2>
+    <div class="sec-sub">Click "View on LinkedIn" to explore each activity — replace emoji thumbnails with your own photos</div>
+  </div>
+  <div class="news-grid">
+
+    <div class="news-card nc-research">
+      <div class="news-card-img">🏛️</div>
+      <div class="news-card-body">
+        <div class="news-date">Nov 2025 – Present · Copenhagen</div>
+        <div class="news-title">Starting PhD · Niels Bohr Institute</div>
+        <div class="news-desc">Joined NQCP to work on quantum compilation and error correction for fault-tolerant distributed architectures.</div>
+        <div class="news-footer">
+          <span class="news-tag">Research</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-community">
+      <div class="news-card-img">🌍</div>
+      <div class="news-card-body">
+        <div class="news-date">Dec 2025 · Nairobi, Kenya</div>
+        <div class="news-title">African Quantum Summit — Steering Committee</div>
+        <div class="news-desc">Served on the steering committee for the first African Quantum Summit — a landmark event for the continent.</div>
+        <div class="news-footer">
+          <span class="news-tag">Leadership</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-community">
+      <div class="news-card-img">🌱</div>
+      <div class="news-card-body">
+        <div class="news-date">Aug 2025 · Rwanda</div>
+        <div class="news-title">QML4Africa Workshop · Deep Learning Indaba</div>
+        <div class="news-desc">Organized the first-ever QML workshop at the Indaba, in collaboration with IBM Quantum South Africa.</div>
+        <div class="news-footer">
+          <span class="news-tag">Workshop</span>
+          <a href="https://www.linkedin.com/posts/yousra-farhani-7a416219a_quantumcomputing-quantumafrica-deeplearningindaba-activity-7370808724325548032-zzCH" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">🔭</div>
+      <div class="news-card-body">
+        <div class="news-date">Sep 2025 · Egypt</div>
+        <div class="news-title">Speaker &amp; Judge · Bibliotheca Alexandrina Quantum Hackathon</div>
+        <div class="news-desc">Invited as speaker and judge at one of the most prestigious quantum hackathons in the Arab world.</div>
+        <div class="news-footer">
+          <span class="news-tag">Talk</span>
+          <a href="https://www.linkedin.com/posts/yousra-farhani-7a416219a_quantumcomputing-quantumegypt-middleeast-activity-7372342257464741888-v4FV" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-award">
+      <div class="news-card-img">🏆</div>
+      <div class="news-card-body">
+        <div class="news-date">Mar 2025</div>
+        <div class="news-title">100 Most Impactful Voices of 2025 in Africa</div>
+        <div class="news-desc">Named among Africa's 100 Most Impactful Voices — recognising contributions to science, technology, and community.</div>
+        <div class="news-footer">
+          <span class="news-tag">Award</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-award">
+      <div class="news-card-img">⭐</div>
+      <div class="news-card-body">
+        <div class="news-date">Feb 2024 · UAE</div>
+        <div class="news-title">Quantum Rising Star Award for Women in Quantum</div>
+        <div class="news-desc">Received at the Quantum Innovation Summit UAE — recognising research and outreach across MENA and Africa.</div>
+        <div class="news-footer">
+          <span class="news-tag">Award</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-award">
+      <div class="news-card-img">🏅</div>
+      <div class="news-card-body">
+        <div class="news-date">Aug 2024 · Abu Dhabi, UAE</div>
+        <div class="news-title">Arab Young Pioneers Award in Quantum Computing</div>
+        <div class="news-desc">Awarded by H.H. Sheikh Theyab. Youngest recipient in the women's category among 40 Arab Young Pioneers.</div>
+        <div class="news-footer">
+          <span class="news-tag">Award</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-award">
+      <div class="news-card-img">🎓</div>
+      <div class="news-card-body">
+        <div class="news-date">Jun 2024</div>
+        <div class="news-title">Google Excellence in Research Scholarship — $3,000</div>
+        <div class="news-desc">Awarded the Google Research Scholarship for African researchers in quantum computing.</div>
+        <div class="news-footer">
+          <span class="news-tag">Scholarship</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">🎤</div>
+      <div class="news-card-body">
+        <div class="news-date">Sep 2024 · Dakar, Senegal</div>
+        <div class="news-title">Quantum Computing &amp; QML Workshop · Deep Learning Indaba</div>
+        <div class="news-desc">Delivered a full QML workshop; received Best Research Poster Award in Quantum NLP at the same event.</div>
+        <div class="news-footer">
+          <span class="news-tag">Workshop</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-community">
+      <div class="news-card-img">🌡️</div>
+      <div class="news-card-body">
+        <div class="news-date">Dec 2023 · UAE</div>
+        <div class="news-title">COP28 — 3rd Place, Best AI for Climate Change</div>
+        <div class="news-desc">Presented SoilMend — AI-powered soil rehabilitation using remote sensing. 3rd-place in the Climate AI Track.</div>
+        <div class="news-footer">
+          <span class="news-tag">Award</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-community">
+      <div class="news-card-img">💻</div>
+      <div class="news-card-body">
+        <div class="news-date">Oct 2022 · Algiers (First in Algeria)</div>
+        <div class="news-title">Organizer · Qiskit Fall Fest Algeria</div>
+        <div class="news-desc">Organized Algeria's first-ever quantum computing event in collaboration with Qiskit and IBM Quantum.</div>
+        <div class="news-footer">
+          <span class="news-tag">Community</span>
+          <a href="https://www.linkedin.com/posts/yousra-farhani-7a416219a_quantumcomputing-algeria20-innovation-activity-7270568725014007808-RovK" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-hack">
+      <div class="news-card-img">🏆</div>
+      <div class="news-card-body">
+        <div class="news-date">Apr 2022 · Abu Dhabi</div>
+        <div class="news-title">Winner · NYUAD Quantum Hackathon</div>
+        <div class="news-desc">First-place winner at the New York University Abu Dhabi Quantum Hackathon.</div>
+        <div class="news-footer">
+          <span class="news-tag">Hackathon</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-hack">
+      <div class="news-card-img">🚀</div>
+      <div class="news-card-body">
+        <div class="news-date">Nov 2022 · Algeria</div>
+        <div class="news-title">1st Place — NASA Space App Challenge</div>
+        <div class="news-desc">First-place winner at the NASA Space App Challenge, Algeria.</div>
+        <div class="news-footer">
+          <span class="news-tag">Hackathon</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-research">
+      <div class="news-card-img">🤖</div>
+      <div class="news-card-body">
+        <div class="news-date">Jul–Dec 2022 · Algiers</div>
+        <div class="news-title">Samsung AI &amp; Data Science Fellow</div>
+        <div class="news-desc">Selected among 15,000+ applicants for Samsung Innovation Campus. 1st-place for best AI project.</div>
+        <div class="news-footer">
+          <span class="news-tag">Fellowship</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sec-head">
+    <div class="sec-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Experience</div>
+    <h2>Professional <em>Journey</em></h2>
+  </div>
+  <div class="exp-list">
+    <div class="exp-entry"><div class="exp-date">Nov 2025 – Present</div><div><div class="exp-role">PhD Researcher</div><div class="exp-org">Niels Bohr Institute — NQCP · Copenhagen, Denmark</div><div class="exp-desc">Quantum compilation, circuit-level optimization, and error correction codes for distributed quantum architectures; accelerating quantum chemistry on fault-tolerant hardware.</div></div></div>
+    <div class="exp-entry"><div class="exp-date">Mar 2025 – Present</div><div><div class="exp-role">QML Research Assistant</div><div class="exp-org">Qatar Computing Research Institute · Doha, Qatar</div><div class="exp-desc">Quantum NLP pipelines for Arabic language processing via lambeq; improving language modelling with quantum-inspired algorithms.</div></div></div>
+    <div class="exp-entry"><div class="exp-date">Sep 2024 – Jul 2025</div><div><div class="exp-role">Quantum Optimization Researcher</div><div class="exp-org">INSA Lyon · France</div><div class="exp-desc">Deployed AutoQUBO framework for NP-hard scheduling; tested QUBO models on D-Wave and InfinityQ solvers.</div></div></div>
+    <div class="exp-entry"><div class="exp-date">Oct 2024 – May 2025</div><div><div class="exp-role">QML Researcher</div><div class="exp-org">Applied Research · Remote</div><div class="exp-desc">Enhanced Quantum Graph Neural Networks for drug-target interaction and molecular interaction modelling.</div></div></div>
+    <div class="exp-entry"><div class="exp-date">Jul – Sep 2024</div><div><div class="exp-role">QML Research Intern</div><div class="exp-org">QWorld · Remote</div><div class="exp-desc">Improved QML scalability via randomized measurements for Consensus-based Distributed Quantum Kernel Learning. Best Research Project in QML award.</div></div></div>
+    <div class="exp-entry"><div class="exp-date">Aug 2023 – May 2024</div><div><div class="exp-role">Quantum Optimization Research Intern</div><div class="exp-org">University of Technology Troyes · France</div><div class="exp-desc">QUBO formulations on D-Wave for Flow Shop Scheduling. Published at GECCO 2024 (Class A).</div></div></div>
+    <div class="exp-entry"><div class="exp-date">Sep – Dec 2023</div><div><div class="exp-role">Quantum Error Mitigation Intern</div><div class="exp-org">QWorld · Remote</div><div class="exp-desc">Explored error mitigation techniques and integrated Mitiq across quantum platforms.</div></div></div>
+    <div class="exp-entry"><div class="exp-date">Jun – Aug 2023</div><div><div class="exp-role">Summer Exchange Student</div><div class="exp-org">University of Massachusetts Amherst · USA</div></div></div>
+    <div class="exp-entry"><div class="exp-date">Jul – Dec 2022</div><div><div class="exp-role">AI &amp; Data Science Fellow</div><div class="exp-org">Samsung Innovation Campus · Algiers, Algeria</div><div class="exp-desc">Competitive scholarship among 15,000+. 6-month advanced AI bootcamp. First-place best AI project.</div></div></div>
+    <div class="exp-entry"><div class="exp-date">Oct 2020 – Jun 2023</div><div><div class="exp-role">Tech Instructor</div><div class="exp-org">GoMyCode · Algiers, Algeria</div><div class="exp-desc">Taught AI, Python, and UX Design. 20+ students secured their first jobs in tech.</div></div></div>
+  </div>
+</section>
+
+<!-- TALKS -->
+<section id="talks">
+  <div class="sec-head">
+    <div class="sec-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Talks</div>
+    <h2>Talks &amp; <em>Presentations</em></h2>
+    <div class="sec-sub">20+ talks, workshops, and hackathons worldwide — replace emoji thumbnails with your event photos</div>
+  </div>
+  <div class="news-grid">
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">🔭</div><!-- replace: <img src="bibliotheca.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Sep 2025 · Alexandria, Egypt</div>
+        <div class="news-title">Speaker &amp; Judge · Bibliotheca Alexandrina Quantum Hackathon</div>
+        <div class="news-desc">Invited as speaker and judge at one of the most prestigious quantum hackathons in the Arab world.</div>
+        <div class="news-footer">
+          <span class="news-tag">Speaker</span>
+          <a href="https://www.linkedin.com/posts/yousra-farhani-7a416219a_quantumcomputing-quantumegypt-middleeast-activity-7372342257464741888-v4FV" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">🌏</div><!-- replace: <img src="sea-hackathon.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Aug 2025</div>
+        <div class="news-title">Speaker &amp; Mentor · SEA Southern Asia Quantum Hackathon</div>
+        <div class="news-desc">Mentored and spoke at the Southern Asia quantum hackathon, engaging students across the region.</div>
+        <div class="news-footer">
+          <span class="news-tag">Speaker</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">🎓</div><!-- replace: <img src="aims-ghana.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Jul 2025 · AIMS Ghana</div>
+        <div class="news-title">Speaker &amp; Mentor · QTEdu Hackathon</div>
+        <div class="news-desc">Quantum education hackathon at the African Institute of Mathematical Sciences, Ghana.</div>
+        <div class="news-footer">
+          <span class="news-tag">Mentor</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">🏫</div><!-- replace: <img src="nyuad-panel.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Apr 2025 · UAE</div>
+        <div class="news-title">Panelist &amp; Mentor · NYUAD Quantum Hackathon for Social Good</div>
+        <div class="news-desc">Panelist and mentor at NYU Abu Dhabi's quantum hackathon focusing on societal impact.</div>
+        <div class="news-footer">
+          <span class="news-tag">Panelist</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">🎤</div><!-- replace: <img src="setif-talk.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Apr 2025 · Setif, Algeria</div>
+        <div class="news-title">Talk — "From Qubit to Careers"</div>
+        <div class="news-desc">University of Farhat Abbas — inspiring students on pathways into quantum computing research and industry.</div>
+        <div class="news-footer">
+          <span class="news-tag">Talk</span>
+          <a href="https://www.linkedin.com/posts/yousra-farhani-7a416219a_quantumcomputing-quantumalgeria-quantumtechnology-activity-7378926712715173888-TzkT" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-community">
+      <div class="news-card-img">🔬</div><!-- replace: <img src="algeria20.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Nov 2024 · Algiers</div>
+        <div class="news-title">Workshop — Quantum Leap: Future of Quantum Computing</div>
+        <div class="news-desc">Algeria 2.0 conference — full workshop on the future of quantum computing and its applications.</div>
+        <div class="news-footer">
+          <span class="news-tag">Workshop</span>
+          <a href="https://www.linkedin.com/posts/yousra-farhani-7a416219a_quantumcomputing-algeria20-innovation-activity-7270568725014007808-RovK" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-community">
+      <div class="news-card-img">🌍</div><!-- replace: <img src="indaba-dakar.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Sep 2024 · Dakar, Senegal</div>
+        <div class="news-title">Workshop — Quantum Computing &amp; QML · Deep Learning Indaba</div>
+        <div class="news-desc">Delivered a full-day workshop on quantum computing and quantum machine learning at the premier African ML conference.</div>
+        <div class="news-footer">
+          <span class="news-tag">Workshop</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">🧬</div><!-- replace: <img src="deepmind-ml.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Aug 2023 · Accra &amp; Dakar</div>
+        <div class="news-title">Workshop — ML in Biology · Google DeepMind</div>
+        <div class="news-desc">Tutor at Google DeepMind's ML in Biology workshop, spanning both Accra (Ghana) and Dakar (Senegal).</div>
+        <div class="news-footer">
+          <span class="news-tag">Workshop</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">🇺🇸</div><!-- replace: <img src="detroit-talk.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Jul 2023 · Detroit, USA</div>
+        <div class="news-title">Workshop — AI in UX Design · Lawrence Tech University</div>
+        <div class="news-desc">Invited workshop on the intersection of AI and user experience design at Lawrence Technological University.</div>
+        <div class="news-footer">
+          <span class="news-tag">Workshop</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-community">
+      <div class="news-card-img">⚛️</div><!-- replace: <img src="qiskit-fest.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Oct 2023 · Algiers</div>
+        <div class="news-title">Workshop — Intro to Quantum Programming with Qiskit</div>
+        <div class="news-desc">Hands-on Qiskit workshop at the Qiskit Fall Fest Algeria — Algeria's first quantum computing event.</div>
+        <div class="news-footer">
+          <span class="news-tag">Workshop</span>
+          <a href="https://www.linkedin.com/posts/yousra-farhani-7a416219a_qiskit-ibm-quantum-computing-activity-7331071138174812160-1Sc0" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">💬</div><!-- replace: <img src="gdg-talk.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Jun 2023 · Algiers</div>
+        <div class="news-title">Talk — Quantum Computing &amp; Programming · GDG Algiers</div>
+        <div class="news-desc">Introduced quantum computing concepts and programming with Qiskit to the Google Developers Group Algiers.</div>
+        <div class="news-footer">
+          <span class="news-tag">Talk</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-card nc-talk">
+      <div class="news-card-img">👩‍🔬</div><!-- replace: <img src="iwd-talk.jpg" alt="..."/> -->
+      <div class="news-card-body">
+        <div class="news-date">Mar 2022 · Algiers</div>
+        <div class="news-title">Talk — How AI Impacts UX Design · IWD'22</div>
+        <div class="news-desc">International Women's Day conference talk on AI-driven UX design and its growing influence on product development.</div>
+        <div class="news-footer">
+          <span class="news-tag">Talk</span>
+          <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="news-li"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="community">
+  <div class="sec-head">
+    <div class="sec-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Community</div>
+    <h2>Community &amp; <em>Leadership</em></h2>
+  </div>
+  <div class="comm-list">
+    <div class="comm-entry"><div class="comm-icon">🌍</div><div><div class="comm-date">Sep 2024 – Present · Founder</div><div class="comm-title"><a href="https://quantumafrica.org" target="_blank">Quantum Africa</a></div><div class="comm-desc">Pioneering research group advancing quantum technologies across Africa — gathering scientists and enthusiasts to build Africa's next generation of quantum talent. Africa's largest quantum research network.</div></div></div>
+    <div class="comm-entry"><div class="comm-icon">🎓</div><div><div class="comm-date">Aug 2025 · Rwanda</div><div class="comm-title">QML4Africa Workshop Organizer · Deep Learning Indaba</div><div class="comm-desc">First quantum computing and QML workshop at the Indaba, in collaboration with IBM Quantum South Africa.</div></div></div>
+    <div class="comm-entry"><div class="comm-icon">🏛️</div><div><div class="comm-date">Dec 2025 · Nairobi</div><div class="comm-title">Steering Committee · African Quantum Summit</div><div class="comm-desc">Strategic planning and execution of the first African Quantum Summit.</div></div></div>
+    <div class="comm-entry"><div class="comm-icon">👩‍💻</div><div><div class="comm-date">2020 – Present</div><div class="comm-title">Lead &amp; Ambassador · Women TechMakers Algiers (Google)</div><div class="comm-desc">Empowering Algerian women in tech through mentorship, learning resources, and career opportunities.</div></div></div>
+    <div class="comm-entry"><div class="comm-icon">⚛️</div><div><div class="comm-date">Oct 2022 · Algiers — First in Algeria</div><div class="comm-title">Organizer · Qiskit Fall Fest Algeria</div><div class="comm-desc">Organized Algeria's first quantum computing event with IBM Quantum.</div></div></div>
+    <div class="comm-entry"><div class="comm-icon">💡</div><div><div class="comm-date">2019 – 2024</div><div class="comm-title">Organizer · Google Developers Group Algiers</div><div class="comm-desc">Organized Devfest, Flutter Festival, Google I/O Extended, ML Bootcamps, and Firebase Summits.</div></div></div>
+  </div>
+  <div class="photo-grid">
+    <div class="pgitem"><div class="ph-note">📸 Quantum Africa<br/><small>add photo → src="qa.jpg"</small></div></div>
+    <div class="pgitem"><div class="ph-note">📸 Deep Learning Indaba<br/><small>add photo</small></div></div>
+    <div class="pgitem"><div class="ph-note">📸 African Quantum Summit<br/><small>add photo</small></div></div>
+    <div class="pgitem"><div class="ph-note">📸 Qiskit Fall Fest Algeria<br/><small>add photo</small></div></div>
+    <div class="pgitem"><div class="ph-note">📸 Award Ceremony<br/><small>add photo</small></div></div>
+    <div class="pgitem"><div class="ph-note">📸 COP28 / Talk<br/><small>add photo</small></div></div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="sec-head">
+    <div class="sec-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>Awards</div>
+    <h2>Awards &amp; <em>Recognition</em></h2>
+    <div class="sec-sub">15+ awards across quantum computing, AI, and community leadership</div>
+  </div>
+  <div class="awards-grid">
+    <div class="aw-card aw-gold"><div class="aw-icon">🌍</div><span class="aw-year">2025</span><div class="aw-title">100 Most Impactful Voices in Africa</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Continental Recognition</div></div>
+    <div class="aw-card aw-gold"><div class="aw-icon">⭐</div><span class="aw-year">2024</span><div class="aw-title">Quantum Rising Star Award for Women in Quantum</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Quantum Innovation Summit UAE</div></div>
+    <div class="aw-card aw-gold"><div class="aw-icon">🏅</div><span class="aw-year">2024</span><div class="aw-title">Arab Young Pioneers Award in Quantum Computing</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Arab Youth Center Abu Dhabi</div></div>
+    <div class="aw-card aw-blue"><div class="aw-icon">🎓</div><span class="aw-year">2024</span><div class="aw-title">Google Excellence in Research Scholarship — $3,000</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Google</div></div>
+    <div class="aw-card aw-blue"><div class="aw-icon">🔬</div><span class="aw-year">2024</span><div class="aw-title">Catalonia Quantum Academy Scholarship — $5,000</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>CQA · ICFO</div></div>
+    <div class="aw-card aw-green"><div class="aw-icon">📜</div><span class="aw-year">2024</span><div class="aw-title">Best Research Poster — Quantum NLP</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Deep Learning Indaba, Dakar</div></div>
+    <div class="aw-card aw-green"><div class="aw-icon">🤖</div><span class="aw-year">2024</span><div class="aw-title">Best Research Project in QML</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>QWorld</div></div>
+    <div class="aw-card aw-gold"><div class="aw-icon">🥇</div><span class="aw-year">2024</span><div class="aw-title">1st Place — Young Arab Innovators Conference</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Sharjah University, UAE</div></div>
+    <div class="aw-card aw-red"><div class="aw-icon">🌱</div><span class="aw-year">2023</span><div class="aw-title">Best AI for Climate Change — 3rd Place</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>COP28, Arab Youth Center UAE</div></div>
+    <div class="aw-card aw-silver"><div class="aw-icon">🇺🇸</div><span class="aw-year">2023</span><div class="aw-title">SUSI EED23 Scholarship Alumna</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>US Department of State</div></div>
+    <div class="aw-card aw-purple"><div class="aw-icon">⚛️</div><span class="aw-year">2022</span><div class="aw-title">Winner — NYUAD Quantum Hackathon</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>New York University Abu Dhabi</div></div>
+    <div class="aw-card aw-purple"><div class="aw-icon">🔤</div><span class="aw-year">2022</span><div class="aw-title">Winner — Quantum NLP Hackathon</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>WOMANIUM Boston</div></div>
+    <div class="aw-card aw-silver"><div class="aw-icon">🥈</div><span class="aw-year">2022</span><div class="aw-title">2nd Place — AI HACK (Largest AI Hackathon in Africa)</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>InstaDeep × Google Tunisia</div></div>
+    <div class="aw-card aw-gold"><div class="aw-icon">🚀</div><span class="aw-year">2022</span><div class="aw-title">1st Place — NASA Space App Challenge</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>NASA · Micro Club Algeria</div></div>
+    <div class="aw-card aw-gold"><div class="aw-icon">🤖</div><span class="aw-year">2022</span><div class="aw-title">1st Place Best AI Project</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Samsung Innovation Campus Algeria</div></div>
+    <div class="aw-card aw-green"><div class="aw-icon">🏆</div><span class="aw-year">2022</span><div class="aw-title">Winner — JunctionX Algiers</div><div class="aw-org"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Junction Finland</div></div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-head">
+    <div class="sec-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Skills</div>
+    <h2>Technical <em>Stack</em></h2>
+  </div>
+  <div class="skills-grid">
+    <div class="sk-block">
+      <div class="sk-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>Quantum Frameworks</div>
+      <div class="sk-pills"><span class="sk-pill">Qiskit</span><span class="sk-pill">PennyLane</span><span class="sk-pill">Cirq</span><span class="sk-pill">D-Wave Ocean</span><span class="sk-pill">InfinityQ</span><span class="sk-pill">Mitiq</span><span class="sk-pill">lambeq</span><span class="sk-pill">AutoQUBO</span></div>
+    </div>
+    <div class="sk-block">
+      <div class="sk-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Machine Learning</div>
+      <div class="sk-pills"><span class="sk-pill">TensorFlow</span><span class="sk-pill">PyTorch</span><span class="sk-pill">Keras</span><span class="sk-pill">Scikit-learn</span><span class="sk-pill">JAX</span><span class="sk-pill">NLP</span><span class="sk-pill">Graph Neural Networks</span><span class="sk-pill">GANs</span></div>
+    </div>
+    <div class="sk-block">
+      <div class="sk-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Programming</div>
+      <div class="sk-pills"><span class="sk-pill">Python</span><span class="sk-pill">C / C++</span><span class="sk-pill">Java</span><span class="sk-pill">R</span><span class="sk-pill">MATLAB</span><span class="sk-pill">JavaScript</span><span class="sk-pill">ReactJS</span><span class="sk-pill">SQL</span></div>
+    </div>
+    <div class="sk-block">
+      <div class="sk-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Tools &amp; Languages</div>
+      <div class="sk-pills"><span class="sk-pill">Git / GitHub</span><span class="sk-pill">Linux</span><span class="sk-pill">MongoDB</span><span class="sk-pill">PostgreSQL</span><span class="sk-pill">Django</span><span class="sk-pill">Flutter</span><span class="sk-pill">Power BI</span><span class="sk-pill">English C2</span><span class="sk-pill">Arabic Native</span><span class="sk-pill">French C1</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-head">
+    <div class="sec-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>Contact</div>
+    <h2>Let's <em>Connect</em></h2>
+    <div class="sec-sub">Open to research collaborations, speaking invitations, and mentorship</div>
+  </div>
+  <p>Happy to connect for anything from joint publications to quantum outreach — reach out any time.</p>
+  <div class="contact-grid">
+    <a href="/cdn-cgi/l/email-protection#a0d9cfd5d3d2c18ec6c1d2c8c1cec9e0cec2c98ecbd58ec4cb" class="cc"><div class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg></div><div class="cc-info"><strong>Email</strong><span><span class="__cf_email__" data-cfemail="364f5943454457185057445e57585f7658545f185d4318525d">[email&#160;protected]</span></span></div></a>
+    <a href="tel:+4571380361" class="cc"><div class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="cc-info"><strong>Phone</strong><span>(+45) 71 38 03 61</span></div></a>
+    <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank" class="cc"><div class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div><div class="cc-info"><strong>LinkedIn</strong><span>yousra-farhani-7a416219a</span></div></a>
+    <a href="https://github.com/YousraFarhani" target="_blank" class="cc"><div class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></div><div class="cc-info"><strong>GitHub</strong><span>YousraFarhani</span></div></a>
+    <a href="https://quantumafrica.org" target="_blank" class="cc"><div class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div><div class="cc-info"><strong>Quantum Africa</strong><span>quantumafrica.org</span></div></a>
+    <a href="#" class="cc"><div class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="cc-info"><strong>Download CV</strong><span>PDF · Last updated 2025</span></div></a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>© 2025 Yousra Farhani &nbsp;·&nbsp; Niels Bohr Institute, Copenhagen</span>
+    <div class="footer-links">
+      <a href="/cdn-cgi/l/email-protection#9de4f2e8eeeffcb3fbfceff5fcf3f4ddf3fff4b3f6e8b3f9f6">Email</a>
+      <a href="https://linkedin.com/in/yousra-farhani-7a416219a" target="_blank">LinkedIn</a>
+      <a href="https://github.com/YousraFarhani" target="_blank">GitHub</a>
+      <a href="https://quantumafrica.org" target="_blank">Quantum Africa</a>
+    </div>
+  </div>
+</footer>
+
+<button id="back-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── Live quantum circuit animation ─────────────────── */
+(function(){
+  const cv  = document.getElementById('circuit-canvas');
+  const ctx = cv.getContext('2d');
+  let W, H, cols=[], sx=0, raf;
+  const NQ=4, RPad=.14, GW=23, GH=17, GAP=43, CW=GAP+GW;
+
+  function rg(){
+    const r=Math.random();
+    if(r<.25) return{t:'H',l:'H'};
+    if(r<.37) return{t:'X',l:'X'};
+    if(r<.46) return{t:'Z',l:'Z'};
+    if(r<.53) return{t:'T',l:'T'};
+    if(r<.59) return{t:'S',l:'S'};
+    if(r<.64) return{t:'Td',l:'T†'};
+    if(r<.73) return{t:'SW',l:'×'};
+    if(r<.82) return{t:'M',l:'M'};
+    return{t:'W',l:''};
+  }
+  function mkCol(x){
+    const g=[];
+    for(let q=0;q<NQ;q++) g.push(rg());
+    if(Math.random()<.36){
+      const c=Math.floor(Math.random()*(NQ-1));
+      g[c]={t:'CT',l:'●'}; g[c+1]={t:'TG',l:'⊕'};
+    }
+    return{x,g};
+  }
+  function ensure(){
+    while(true){
+      const last=cols.length?cols[cols.length-1]:null;
+      const nx=last?last.x+CW:0;
+      if(nx<sx+W+CW*2) cols.push(mkCol(nx)); else break;
+    }
+    while(cols.length&&cols[0].x-sx<-CW*2) cols.shift();
+  }
+  function wb(v,a){return v+(Math.random()-.5)*a}
+  function wire(y,x0,x1,a){
+    ctx.save();ctx.globalAlpha=a;ctx.strokeStyle='#fff';
+    ctx.lineWidth=1.15;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(x0,wb(y,.6));
+    const S=8;for(let i=1;i<=S;i++){const t=i/S;ctx.lineTo(x0+(x1-x0)*t,wb(y,.6));}
+    ctx.stroke();ctx.restore();
+  }
+  function box(x,y,w,h,a){
+    ctx.save();
+    ctx.fillStyle='rgba(0,0,0,.62)';ctx.fillRect(x,y,w,h);
+    ctx.globalAlpha=a;ctx.strokeStyle='#fff';ctx.lineWidth=1.15;ctx.lineJoin='round';
+    ctx.beginPath();
+    ctx.moveTo(wb(x,.55),wb(y,.55));ctx.lineTo(wb(x+w,.55),wb(y,.55));
+    ctx.lineTo(wb(x+w,.55),wb(y+h,.55));ctx.lineTo(wb(x,.55),wb(y+h,.55));
+    ctx.closePath();ctx.stroke();ctx.restore();
+  }
+  function lbl(t,x,y,a,sz){
+    ctx.save();ctx.globalAlpha=a;ctx.fillStyle='#fff';
+    ctx.font=`${sz||9.5}px Georgia,serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(t,wb(x,.35),wb(y,.35));ctx.restore();
+  }
+  function dot(x,y,r,a,fill){
+    ctx.save();ctx.globalAlpha=a;
+    ctx.beginPath();ctx.arc(wb(x,.45),wb(y,.45),r,0,Math.PI*2);
+    if(fill){ctx.fillStyle='#fff';ctx.fill();}
+    else{ctx.strokeStyle='#fff';ctx.lineWidth=1.1;ctx.stroke();}
+    ctx.restore();
+  }
+  function cross(x,y,r,a){
+    ctx.save();ctx.globalAlpha=a;ctx.strokeStyle='#fff';ctx.lineWidth=1.1;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(x-r,y-r);ctx.lineTo(x+r,y+r);
+    ctx.moveTo(x+r,y-r);ctx.lineTo(x-r,y+r);ctx.stroke();ctx.restore();
+  }
+  function meas(x,y,w,h,a){
+    box(x,y,w,h,a);
+    ctx.save();ctx.globalAlpha=a*.85;ctx.strokeStyle='#fff';ctx.lineWidth=.95;ctx.lineCap='round';
+    ctx.beginPath();ctx.arc(x+w/2,y+h*.66,h*.26,Math.PI,0);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x+w/2,y+h*.66);ctx.lineTo(x+w*.74,y+h*.17);ctx.stroke();
+    ctx.restore();
+  }
+  function ry(q){
+    const u=H*(1-RPad*2);
+    return H*RPad+q*(u/(NQ-1));
+  }
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    const ys=Array.from({length:NQ},(_,q)=>ry(q));
+    for(let q=0;q<NQ;q++) wire(ys[q],0,W,.12);
+    // |0⟩ labels pinned left
+    for(let q=0;q<NQ;q++){
+      ctx.save();ctx.globalAlpha=.18;ctx.fillStyle='#fff';
+      ctx.font='9.5px Georgia,serif';ctx.textAlign='left';ctx.textBaseline='middle';
+      ctx.fillText('|0⟩',12,ys[q]);ctx.restore();
+    }
+    for(const col of cols){
+      const sc=col.x-sx;
+      if(sc>W+CW||sc<-CW*2) continue;
+      const fi=Math.min(1,(W-sc+CW)/(CW*1.4));
+      const fo=Math.min(1,(sc+CW*1.4)/(CW*1.4));
+      const ca=Math.min(fi,fo)*.62;
+      if(ca<=0) continue;
+      // CNOT bar
+      const ci=col.g.findIndex(g=>g.t==='CT');
+      const ti=col.g.findIndex(g=>g.t==='TG');
+      if(ci>=0&&ti>=0){
+        ctx.save();ctx.globalAlpha=ca*.6;ctx.strokeStyle='#fff';ctx.lineWidth=1.05;
+        ctx.beginPath();ctx.moveTo(sc+GW/2,ys[ci]);ctx.lineTo(sc+GW/2,ys[ti]);
+        ctx.stroke();ctx.restore();
+      }
+      for(let q=0;q<NQ;q++){
+        const g=col.g[q],gx=sc,gy=ys[q],gxc=gx+GW/2,a=ca;
+        switch(g.t){
+          case 'W': break;
+          case 'H':case 'X':case 'Z':case 'T':case 'S':case 'Td':
+            box(gx,gy-GH/2,GW,GH,a);
+            lbl(g.l,gxc,gy,a*1.1,g.l.length>1?7:9.5); break;
+          case 'SW': box(gx,gy-GH/2,GW,GH,a); cross(gxc,gy,3.8,a*1.1); break;
+          case 'M': meas(gx,gy-GH/2,GW,GH,a); break;
+          case 'CT': dot(gxc,gy,3.8,a*1.2,true); break;
+          case 'TG':
+            dot(gxc,gy,6.5,a*.85,false);
+            ctx.save();ctx.globalAlpha=a*.85;ctx.strokeStyle='#fff';ctx.lineWidth=1.05;
+            ctx.beginPath();ctx.moveTo(gxc-5.5,gy);ctx.lineTo(gxc+5.5,gy);
+            ctx.moveTo(gxc,gy-5.5);ctx.lineTo(gxc,gy+5.5);ctx.stroke();ctx.restore(); break;
+        }
+      }
+    }
+    // subtle formula
+    ctx.save();ctx.globalAlpha=.1;ctx.fillStyle='#fff';
+    ctx.font=`italic ${Math.min(15,H*.046)}px Georgia,serif`;
+    ctx.textAlign='right';ctx.textBaseline='bottom';
+    ctx.fillText('(|0⟩ + |1⟩) / √2',W-16,H-14);ctx.restore();
+  }
+  function tick(){sx+=.5;ensure();frame();raf=requestAnimationFrame(tick);}
+  function resize(){
+    const hdr=document.querySelector('header');
+    W=cv.width=hdr.offsetWidth;H=cv.height=hdr.offsetHeight;
+    cols=[];sx=0;ensure();
+  }
+  setTimeout(()=>{resize();tick();},80);
+  window.addEventListener('resize',()=>{cancelAnimationFrame(raf);resize();tick();});
+})();
+
+/* ── Section reveal ─────────────────────────────────── */
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting) e.target.classList.add('visible');});
+},{threshold:.06});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+
+/* ── Active nav ─────────────────────────────────────── */
+const secs=document.querySelectorAll('section[id]');
+const navAs=document.querySelectorAll('nav a');
+const nio=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      navAs.forEach(l=>l.classList.remove('active'));
+      const a=document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if(a) a.classList.add('active');
+    }
+  });
+},{rootMargin:'-32% 0px -62% 0px'});
+secs.forEach(s=>nio.observe(s));
+
+/* ── Scroll-to-top ──────────────────────────────────── */
+const bt=document.getElementById('back-top');
+window.addEventListener('scroll',()=>bt.classList.toggle('show',scrollY>400));
+</script>
+</body>
+</html>
