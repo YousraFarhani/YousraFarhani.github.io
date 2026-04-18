@@ -13,7 +13,7 @@
    TOKENS
 ═══════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:18px;scroll-padding-top:60px}
+html{scroll-behavior:smooth;font-size:16px;scroll-padding-top:60px}
 
 :root{
   /* Core */
@@ -92,7 +92,7 @@ header::before{
   margin:0 auto;
   padding:3.5rem var(--pad) 3.5rem;
   display:grid;
-  grid-template-columns:200px 1fr;
+  grid-template-columns:300px 1fr;
   gap:3rem;
   align-items:center;
   min-height:400px;
@@ -100,7 +100,7 @@ header::before{
 
 /* ── Profile photo ── */
 .profile-photo{
-  width:200px;height:260px;
+  width:300px;height:390px;
   border-radius:8px;
   overflow:hidden;
   background:#191919;
@@ -857,7 +857,7 @@ footer{
 
 @media(max-width:740px){
   .header-inner{grid-template-columns:1fr;gap:1.5rem;min-height:auto}
-  .profile-photo{width:150px;height:195px;margin:0 auto}
+  .profile-photo{width:210px;height:270px;margin:0 auto}
   .exp-entry{grid-template-columns:1fr;gap:.06rem}
   .awards-grid{grid-template-columns:repeat(2,1fr)}
   .photo-grid{grid-template-columns:repeat(2,1fr)}
@@ -884,7 +884,9 @@ footer{
          Replace the div below with:
          <img src="photo.jpg" alt="Yousra Farhani"/>
          inside .profile-photo to add your picture           -->
-    <div class="profile-photo">YF</div>
+    <div class="profile-photo">
+      <img src="Yousra_Farhani.png" alt="Yousra Farhani"/>
+    </div>
 
     <div class="header-text">
       <div class="header-eyebrow">
